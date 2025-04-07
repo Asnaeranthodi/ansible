@@ -1,0 +1,44 @@
+---
+- name: Install and configure MySQL
+  hosts: all
+  become: true
+  vars:
+    mysql_root_password: "root_password"  # Replace this with a secure password
+
+  tasks:
+    - name: Install MySQL Server
+      package:
+        name: "{{ mysql_package }}"
+        state: present
+      vars:
+        mysql_package: "{{ 'mysql-server' if ansible_os_family == 'Debian' else 'mariadb-server' }}"
+
+    - name: Ensure MySQL is started and enabled
+      service:
+        name: "{{ mysql_service }}"
+        state: started
+        enabled: yes
+      vars:
+        mysql_service: "{{ 'mysql' if ansible_os_family == 'Debian' else 'mariadb' }}"
+
+    - name: Set MySQL root password
+      mysql_user:
+        name: root
+        password: "{{ mysql_root_password }}"
+        host: "localhost"
+        state: present
+      when: ansible_os_family == "Debian" or ansible_distribution == "CentOS"
+
+    - name: Allow MySQL through the firewall (Debian)
+      ufw:
+        rule: allow
+        name: 'MySQL'
+      when: ansible_os_family == "Debian"
+
+    - name: Open MySQL port (CentOS)
+      firewalld:
+        service: mysql
+        permanent: true
+        state: enabled
+        immediate: yes
+      when: ansible_os_family == "RedHat"
