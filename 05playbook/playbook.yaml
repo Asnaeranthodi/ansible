@@ -1,0 +1,21 @@
+---
+- name: Configure webservers
+  hosts: webservers
+  become: true
+  roles:
+    - webservers
+  tasks:
+    - name: Ensure Apache is installed
+      ansible.builtin.package:
+        name: apache2
+        state: present
+    - name: Copy the dynamic homepage
+      ansible.builtin.template:
+        src: homepage.j2
+        dest: /var/www/html/index.html
+    - name: Ensure Apache service is running and enabled
+      ansible.builtin.service:
+        name: apache2
+        state: started
+        enabled: true
+

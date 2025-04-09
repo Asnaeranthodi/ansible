@@ -1,0 +1,30 @@
+---
+# tasks file for webservers
+---
+- name: Install Apache web server
+  package:
+    name: "{{ apache_package_name }}"
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: Install Apache web server
+  package:
+    name: "{{ apache_package_name }}"
+    state: present
+  become: true
+  when: ansible_os_family == "RedHat"
+
+- name: Copy the homepage template
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    mode: '0644'
+  become: true
+
+- name: Ensure Apache is started and enabled
+  service:
+    name: "{{ apache_service_name }}"
+    state: started
+    enabled: yes
+  become: true
