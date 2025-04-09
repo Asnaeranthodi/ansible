@@ -1,7 +1,0 @@
-- hosts: servers
-  tasks:
-  - name: Replace example
-    replace:
-     path: /home/vagrant/vilas.txt
-     regexp: 'hello'
-     replace: "hello world"

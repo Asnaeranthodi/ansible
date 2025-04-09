@@ -1,8 +1,0 @@
-- hosts: all
-  tasks:
-  - name: zip directory example
-    archive:
-     path:
-      - /home/vagrant
-     dest: /home/vagrant/vilas.zip
-     format: zip
