@@ -21,24 +21,3 @@
       vars:
         mysql_service: "{{ 'mysql' if ansible_os_family == 'Debian' else 'mariadb' }}"
 
-    - name: Set MySQL root password
-      mysql_user:
-        name: root
-        password: "{{ mysql_root_password }}"
-        host: "localhost"
-        state: present
-      when: ansible_os_family == "Debian" or ansible_distribution == "CentOS"
-
-    - name: Allow MySQL through the firewall (Debian)
-      ufw:
-        rule: allow
-        name: 'MySQL'
-      when: ansible_os_family == "Debian"
-
-    - name: Open MySQL port (CentOS)
-      firewalld:
-        service: mysql
-        permanent: true
-        state: enabled
-        immediate: yes
-      when: ansible_os_family == "RedHat"
