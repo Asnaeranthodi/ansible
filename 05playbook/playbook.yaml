@@ -11,7 +11,7 @@
         state: present
     - name: Copy the dynamic homepage
       ansible.builtin.template:
-        src: homepage.j2
+        src: /home/asna/ansible/05playbook/ansible/05playbook/roles/webservers/templates/index.html.j2
         dest: /var/www/html/index.html
     - name: Ensure Apache service is running and enabled
       ansible.builtin.service:

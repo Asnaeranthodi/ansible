@@ -1,3 +1,0 @@
-# vars file for webservers
-apache_package_name: "{{ 'apache2' if ansible_os_family == 'Debian' else 'httpd' }}"
-apache_service_name: "{{ 'apache2' if ansible_os_family == 'Debian' else 'httpd' }}"
